@@ -1,6 +1,7 @@
 package com.techelevator;
 
 import com.techelevator.application.VendingMachineApplication;
+import com.techelevator.clases.*;
 
 public class VendingMachine {
 

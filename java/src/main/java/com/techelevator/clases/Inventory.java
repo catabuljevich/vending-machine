@@ -1,6 +1,6 @@
 package com.techelevator.clases;
 
-import sun.jvm.hotspot.types.CIntegerField;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +32,11 @@ public class Inventory {
     public List<Item> getInventory() {
         return inventory;
     }
+
+    public Map<Item, Integer> getStock() {
+        return stock;
+    }
+
     private List<Item> addItems () {
         List<Item> items = new ArrayList<>();
         File file = new File("vendingmachine.csv");
@@ -63,9 +68,12 @@ public class Inventory {
         return items;
     }
     public boolean removeStock (Item item, int amount){
-        Item item1 = stock.get(item);
-        if (stock.containsKey(item) && stock.){
-
+        if (stock.containsKey(item)) {
+            if (stock.get(item) <= MAX_STOCK || stock.get(item) -amount < 0 ) {
+                stock.put(item, (stock.get(item) - amount));
+                return true;
+            }
         }
+        return false;
     }
 }

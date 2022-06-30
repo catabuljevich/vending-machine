@@ -9,6 +9,7 @@ public class Chips extends Item {
 
     @Override
     public String toString(){
+
         return "Crunch Crunch, Yum!";
     }
 }

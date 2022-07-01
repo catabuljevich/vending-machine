@@ -31,21 +31,24 @@ public class UserOutput {
         System.out.println();
 
 
-        String heder1 ="CODE";
-        String heder2 ="ITEM";
-        String heder3 ="PRICE";
-        String heder4 ="AMOUNT AVAILABLE";
-        String totalHeader= String.format(heder1 + " %10s",heder2  + " %10s",heder3) ;
+        String header1 ="CODE";
+        String header2 ="ITEM";
+        String header3 ="PRICE";
+        String header4 ="AMOUNT AVAILABLE";
+
+        String totalHeader= String.format( "%s %15s %12s %22s",header1,header2,header3,header4) ;
         System.out.println(totalHeader);
 
-        //System.out.println("CODE             ITEM         PRICE          AMOUNT AVAILABLE ");
         for(Item item: items)
         {
             if (stock.get(item) >0 ){
-                stockOfItem = stock.get(item);
-                System.out.println(item.getId() + "          " + item.getName() + "        $" + item.getPrice() + "   " + stockOfItem   );
+                String answer = String.format("%s %20s %8s %15s", item.getId(), item.getName(), item.getPrice(), stockOfItem);
+                System.out.println(answer);
+               // System.out.println(item.getId() + "" + item.getName() + "        $" + item.getPrice() + "   " + stockOfItem   );
             }else {
-                System.out.println(item.getId() + "          " + item.getName() + "        $" + item.getPrice() + "   " + "SOLD OUT"   );
+                String answer = String.format("%s %20s %8s %15s", item.getId(), item.getName(), item.getPrice(), "SOLD OUT");
+                System.out.println(answer);
+               // System.out.println(item.getId() + "          " + item.getName() + "        $" + item.getPrice() + "   " + "SOLD OUT"   );
             }
         }
         System.out.println();

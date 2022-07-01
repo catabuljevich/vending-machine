@@ -1,10 +1,7 @@
 package com.techelevator.application;
 
 
-import com.techelevator.clases.CashRegister;
-import com.techelevator.clases.Inventory;
-import com.techelevator.clases.Item;
-import com.techelevator.clases.ShoppingCart;
+import com.techelevator.clases.*;
 import com.techelevator.ui.UserInput;
 import com.techelevator.ui.UserOutput;
 
@@ -17,10 +14,14 @@ public class VendingMachineApplication {
     private static String B = "B";
     private static String C = "C";
     private static String D = "D";
+    private static String FEED_MONEY ="FEED MONEY";
+    private static String GIVE_CHANGE ="GIVE CHANGE";
+
 
     private Inventory inventory;
     private ShoppingCart itemsSelected;
     private CashRegister cashRegister;
+    private Logger register;
     private BigDecimal actualMoney ;
     private BigDecimal[] change = new BigDecimal[3] ;
 
@@ -29,6 +30,7 @@ public class VendingMachineApplication {
         itemsSelected = new ShoppingCart();
         cashRegister = new CashRegister();
         actualMoney = BigDecimal.ZERO;
+        register = new Logger();
     }
 
 
@@ -80,9 +82,15 @@ public class VendingMachineApplication {
         }
     }
 
+    public void createLog(String description, BigDecimal inputMoney, BigDecimal actualMoney){
+        Log log = new Log(description,inputMoney,actualMoney);
+        register.logMessage(log);
+    }
+
 
     public void run() {
-        while(true) {
+        boolean executeAplication = true;
+        while(executeAplication) {
             // todo: display home screen
             UserOutput.displayHomeScreen();
 
@@ -101,6 +109,7 @@ public class VendingMachineApplication {
                              feedMoney();
                              BigDecimal feedMoney = BigDecimal.valueOf(Integer.parseInt(UserInput.getFeedMoneyOption()));
                              actualMoney = actualMoney.add(feedMoney);
+                             createLog(FEED_MONEY, feedMoney,actualMoney);
                              purchaseMenu();
                              purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney);
                          }
@@ -112,6 +121,7 @@ public class VendingMachineApplication {
                              if (isMoneyEnough(actualMoney, inventory.getPrice(itemId) )){
                                  if (addToCart(itemId,1)){
                                      productDispensed();
+                                     createLog( inventory.getName(itemId), inventory.getPrice(itemId),actualMoney);
                                  }
                              }
                              purchaseMenu();
@@ -120,6 +130,7 @@ public class VendingMachineApplication {
                          }
                          while (purchaseChoice.equalsIgnoreCase("finish")){
                                 finishMenu();
+                                createLog(GIVE_CHANGE, actualMoney,BigDecimal.ZERO);
                                 change = cashRegister.getChange(actualMoney);
                                 displayChange(change);
                                 actualMoney = BigDecimal.ZERO;
@@ -129,7 +140,7 @@ public class VendingMachineApplication {
                          }
             } else if(userChoice.equalsIgnoreCase("exit")) {
                 // break out of the loop and end the application
-
+                executeAplication = false;
                 break;
             }
         }

@@ -87,4 +87,14 @@ public class Inventory {
         }
         return price;
     }
+
+    public String getName(String itemId) {
+        String name = "";
+        for(Item item : inventory){
+            if (item.getId().equals(itemId.toUpperCase())) {
+                name = item.getName();
+            }
+        }
+        return name;
+    }
 }

@@ -20,6 +20,10 @@ public class ShoppingCart {
 //        }
     }
 
+    public void empty(){
+        cart = new HashMap<>();
+    }
+
 
     public Map<Item, Integer> getCart() {
         return cart;

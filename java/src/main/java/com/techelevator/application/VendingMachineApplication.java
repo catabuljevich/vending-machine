@@ -22,6 +22,7 @@ public class VendingMachineApplication {
     private ShoppingCart itemsSelected;
     private CashRegister cashRegister;
     private BigDecimal actualMoney ;
+    private BigDecimal[] change = new BigDecimal[3] ;
 
     public VendingMachineApplication() {
         inventory =  new Inventory();
@@ -54,8 +55,9 @@ public class VendingMachineApplication {
             totalCart = totalCart.add(key.getPrice());
 
         }
-        if (totalCart.compareTo(moneyFed) == 0|| totalCart.compareTo(moneyFed)== 1  ){
-              return true;
+        if (totalCart.compareTo(moneyFed) == 0|| totalCart.compareTo(moneyFed)== (-1)  ){
+            actualMoney = actualMoney.subtract(totalCart);
+            return true;
         }else {
             return false;
         }
@@ -64,7 +66,7 @@ public class VendingMachineApplication {
     public void productDispensed(){
         for (Map.Entry<Item, Integer> items: itemsSelected.getCart().entrySet()){
             Item key = items.getKey();
-            key.toString();
+            System.out.println(key.toString());
 
         }
     }
@@ -102,45 +104,35 @@ public class VendingMachineApplication {
                                  purchaseMenu();
                                  purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney);
                              } else if (addToCart(itemId,1) && isMoneyEnough(actualMoney) ) {
-                                 addToCart(itemId,1);
-
+                                // addToCart(itemId,1);
                                  productDispensed();
                                  purchaseMenu();
                                  purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney);
                              }
                          }
+                         while (purchaseChoice.equalsIgnoreCase("finish")){
+                                finishMenu();
+                                change = cashRegister.getChange(actualMoney);
+                                displayChange(change);
+                                actualMoney = BigDecimal.ZERO;
+                                itemsSelected.empty();
+                                purchaseChoice = "";
 
-
-//                         if (purchaseChoice.equalsIgnoreCase("feed")){
-//                             feedMoney();
-//                             moneyFed = BigDecimal.valueOf(Integer.parseInt(UserInput.getFeedMoneyOption()));
-//                             purchaseMenu();
-//                             purchaseChoice =  UserInput.getPurchaseScreenOption(moneyFed);
-//                         } else if (purchaseChoice.equalsIgnoreCase("select")) {
-//                            selectItems();
-//                            displayItems();
-//                            String itemId = UserInput.getItemId();
-//                            //todo agregar al carrito si me alcanza la plata
-//                             if (!addToCart(itemId,1)){
-//                                 purchaseMenu();
-//                                 purchaseChoice =  UserInput.getPurchaseScreenOption(moneyFed);
-//                             } else if (addToCart(itemId,1) && isMoneyEnough(moneyFed) ) {
-//                                 productDispensed();
-//                                 purchaseMenu();
-//                                 purchaseChoice =  UserInput.getPurchaseScreenOption(moneyFed);
-//                             }
-//
-//                         }else if(purchaseChoice.equalsIgnoreCase("finish")){
-//
-//                         }
-
-
+                         }
             } else if(userChoice.equalsIgnoreCase("exit")) {
                 // break out of the loop and end the application
 
                 break;
             }
         }
+    }
+
+    private void displayChange(BigDecimal[] change) {
+        UserOutput.displayChange( change);
+    }
+
+    private void finishMenu() {
+        UserOutput.displayFinishMenu();
     }
 
     public void displayItems(){

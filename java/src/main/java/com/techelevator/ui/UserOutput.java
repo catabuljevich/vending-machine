@@ -2,6 +2,7 @@ package com.techelevator.ui;
 
 import com.techelevator.clases.Item;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -72,5 +73,31 @@ public class UserOutput {
         System.out.println("**************************************************************************");
         System.out.println("                                  SELECT PRODUCT");
         System.out.println();
+    }
+
+    public static void displayFinishMenu() {
+        clearScreen();
+        System.out.println();
+        System.out.println("**************************************************************************");
+        System.out.println("                                  FINISH TRANSACTION");
+        System.out.println();
+    }
+
+    public static void displayChange(BigDecimal[] change) {
+        BigDecimal quorters = change[0];
+        BigDecimal dimes = change[1];
+        BigDecimal nickels = change[2];
+        System.out.println("Your change is :");
+        if (dimes == null) {
+            System.out.println( quorters +" quarters");
+        } else if (nickels == null) {
+            System.out.println( quorters +" quarters");
+            System.out.println( dimes +" dimes ");
+        }else {
+            System.out.println(quorters + " quarters");
+            System.out.println(dimes + " dimes ");
+            System.out.println(nickels + " nickels ");
+        }
+
     }
 }

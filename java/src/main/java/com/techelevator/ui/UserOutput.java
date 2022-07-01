@@ -45,11 +45,9 @@ public class UserOutput {
                 stockOfItem = stock.get(item);
                 String answer = String.format("%s %20s %8s %15s", item.getId(), item.getName(), item.getPrice(), stockOfItem);
                 System.out.println(answer);
-               // System.out.println(item.getId() + "" + item.getName() + "        $" + item.getPrice() + "   " + stockOfItem   );
             }else {
                 String answer = String.format("%s %20s %8s %15s", item.getId(), item.getName(), item.getPrice(), "SOLD OUT");
                 System.out.println(answer);
-               // System.out.println(item.getId() + "          " + item.getName() + "        $" + item.getPrice() + "   " + "SOLD OUT"   );
             }
         }
         System.out.println();

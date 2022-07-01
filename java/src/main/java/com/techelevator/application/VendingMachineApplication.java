@@ -97,6 +97,7 @@ public class VendingMachineApplication {
             // todo: and get user choice
             String userChoice =  UserInput.getHomeScreenOption();
 
+
             if(userChoice.equalsIgnoreCase("display")) {
                 // todo: logic to display all vending machine items
                 displayItems();
@@ -107,11 +108,15 @@ public class VendingMachineApplication {
                 String purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney );
                          while (purchaseChoice.equalsIgnoreCase("feed")){
                              feedMoney();
-                             BigDecimal feedMoney = BigDecimal.valueOf(Integer.parseInt(UserInput.getFeedMoneyOption()));
-                             actualMoney = actualMoney.add(feedMoney);
-                             createLog(FEED_MONEY, feedMoney,actualMoney);
-                             purchaseMenu();
-                             purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney);
+                             try {
+                                 BigDecimal feedMoney = BigDecimal.valueOf(Integer.parseInt(UserInput.getFeedMoneyOption()));
+                                 actualMoney = actualMoney.add(feedMoney);
+                                 createLog(FEED_MONEY, feedMoney,actualMoney);
+                                 purchaseMenu();
+                                 purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney);
+                             }catch (Exception EX){
+                                 System.out.println("Invalid Amount ");
+                             }
                          }
                          while (purchaseChoice.equalsIgnoreCase("select")){
                              selectItems();
@@ -143,7 +148,11 @@ public class VendingMachineApplication {
                 executeAplication = false;
                 break;
             }
+
+
         }
+
+
     }
 
     private void displayChange(BigDecimal[] change) {

@@ -39,26 +39,33 @@ public class VendingMachineApplication {
                 itemSelected = item;
             }
         }
-        if (itemSelected == null || (!inventory.removeStock(itemSelected, amount))){
+        if (itemSelected == null ){
+            System.out.println(" ** THE PRODUCT ID DOES NOT EXIST ** ");
             return false;
-        }else {
+        }else if(!inventory.removeStock(itemSelected, amount)){
+            System.out.println(" ** THE PRODUCT IS SOLD OUT ** ");
+            return false;
+        }else{
             itemsSelected.addItemToCart(itemSelected, amount);
             return true;
         }
 
+
+
     }
 
-    public boolean isMoneyEnough(BigDecimal moneyFed) {
+    public boolean isMoneyEnough(BigDecimal moneyFed, BigDecimal moneyOwed) {
         BigDecimal totalCart = BigDecimal.ZERO;
-        for (Map.Entry<Item, Integer> items: itemsSelected.getCart().entrySet()){
-            Item key = items.getKey();
-            totalCart = totalCart.add(key.getPrice());
 
-        }
-        if (totalCart.compareTo(moneyFed) == 0|| totalCart.compareTo(moneyFed)== (-1)  ){
-            actualMoney = actualMoney.subtract(totalCart);
+//        for (Item  items: itemsSelected.getCart().keySet()){
+//            totalCart = totalCart.add(items.getPrice());
+//
+//        }
+        if (moneyOwed.compareTo(moneyFed) == 0|| moneyOwed.compareTo(moneyFed)== (-1)  ){
+            actualMoney = actualMoney.subtract(moneyOwed);
             return true;
         }else {
+            System.out.println("** MONEY IS NOT ENOUGH ** ");
             return false;
         }
     }
@@ -66,8 +73,10 @@ public class VendingMachineApplication {
     public void productDispensed(){
         for (Map.Entry<Item, Integer> items: itemsSelected.getCart().entrySet()){
             Item key = items.getKey();
+            System.out.println("Product Dispensed: " + key.getName() );
+            System.out.println("Price: $" + key.getPrice());
+            System.out.println("Current money: $" + actualMoney);
             System.out.println(key.toString());
-
         }
     }
 
@@ -100,15 +109,14 @@ public class VendingMachineApplication {
                              displayItems();
                              String itemId = UserInput.getItemId();
                              //todo agregar al carrito si me alcanza la plata
-                             if (!addToCart(itemId,1)){
-                                 purchaseMenu();
-                                 purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney);
-                             } else if (addToCart(itemId,1) && isMoneyEnough(actualMoney) ) {
-                                // addToCart(itemId,1);
-                                 productDispensed();
-                                 purchaseMenu();
-                                 purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney);
+                             if (isMoneyEnough(actualMoney, inventory.getPrice(itemId) )){
+                                 if (addToCart(itemId,1)){
+                                     productDispensed();
+                                 }
                              }
+                             purchaseMenu();
+                             purchaseChoice =  UserInput.getPurchaseScreenOption(actualMoney);
+
                          }
                          while (purchaseChoice.equalsIgnoreCase("finish")){
                                 finishMenu();

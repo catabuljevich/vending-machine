@@ -5,6 +5,7 @@ package com.techelevator.clases;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 public class Inventory {
@@ -69,11 +70,21 @@ public class Inventory {
     }
     public boolean removeStock (Item item, int amount){
         if (stock.containsKey(item)) {
-            if (stock.get(item) <= MAX_STOCK || stock.get(item) -amount < 0 ) {
+            if (stock.get(item) <= MAX_STOCK && stock.get(item)-amount >= 0 ) {
                 stock.put(item, (stock.get(item) - amount));
                 return true;
             }
         }
         return false;
+    }
+
+    public BigDecimal getPrice(String itemId){
+        BigDecimal price = BigDecimal.ZERO;
+        for(Item item : inventory){
+            if (item.getId().equals(itemId.toUpperCase())) {
+                price = item.getPrice();
+            }
+        }
+        return price;
     }
 }

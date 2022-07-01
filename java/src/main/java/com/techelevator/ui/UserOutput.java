@@ -31,8 +31,14 @@ public class UserOutput {
         System.out.println();
 
 
+        String heder1 ="CODE";
+        String heder2 ="ITEM";
+        String heder3 ="PRICE";
+        String heder4 ="AMOUNT AVAILABLE";
+        String totalHeader= String.format(heder1 + " %10s",heder2  + " %10s",heder3) ;
+        System.out.println(totalHeader);
 
-        System.out.println("CODE             ITEM         PRICE          AMOUNT AVAILABLE ");
+        //System.out.println("CODE             ITEM         PRICE          AMOUNT AVAILABLE ");
         for(Item item: items)
         {
             if (stock.get(item) >0 ){
